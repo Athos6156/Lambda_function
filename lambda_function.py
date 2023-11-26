@@ -1,12 +1,14 @@
 import boto3
 from botocore.exceptions import ClientError
+import json
 
 def lambda_handler(event, context):
     ses_client = boto3.client('ses')
-    sender_email = "mh4039@columbia.edu"  # Replace with your verified sender email
-    recipient_email = event['recipient']
-    subject = event['subject']
-    body_text = event['body']
+    sender_email = "kg2982@columbia.edu"  # Replace with your verified sender email
+    json_data = json.loads(event['Records'][0]['Sns']['Message'])
+    recipient_email = json_data['recipient']
+    subject = json_data['subject']
+    body_text = json_data['body']
 
     try:
         response = ses_client.send_email(
